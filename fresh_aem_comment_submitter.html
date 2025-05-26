@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AEM Guide Comments</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .qa-block { margin-bottom: 30px; }
+        .question { font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+        .answer { margin-left: 20px; margin-bottom: 10px; }
+        textarea { width: 100%; height: 60px; }
+        hr.qa-separator { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+    </style>
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEEyJAOA0u74enJj26cEzhURZh_11uy73Yy72ouBSqixaB3x7pp8m35I6H6906uXVmmw/exec";
+
+        function saveComment(index) {
+            const block = document.querySelectorAll('.qa-block')[index];
+            const question = block.querySelector('.question').innerText;
+            const comment = block.querySelector('textarea').value;
+            const assignee = block.getAttribute("data-assignee");
+
+            const formData = new URLSearchParams();
+            formData.append("question", question);
+            formData.append("comment", comment);
+            formData.append("assignee", assignee);
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => alert("Comment submitted successfully!"))
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to submit comment.");
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>AEM Guides Q&A</h1>
+    <div class="qa-block" data-assignee="Pulkit">
+        <div class="question">How can I automate review workflows in AEM Guides?</div>
+        <div class="answer">You can use Workfront or setup manual triggers via the AEM inbox or third-party systems.</div>
+        <div class="comment-box">
+            <label for="comment-0">Your Comment:</label>
+            <textarea id="comment-0"></textarea><br/>
+            <button onclick="saveComment(0)">Submit Comment</button>
+        </div>
+    </div>
+    <hr class="qa-separator" id="sep-0"/>
+</body>
+</html>
