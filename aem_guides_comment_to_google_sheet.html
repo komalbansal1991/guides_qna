@@ -12,7 +12,7 @@
         textarea { width: 100%; height: 60px; }
         hr.qa-separator { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
     </style><script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4dqcu8rgcoqzN9vm2lK8bKBm0Xnl-3YsrMVU24VR6TEz_yWzblYpc459imxtZzAMPTA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
 function saveComment(index) {
   const block = document.querySelectorAll('.qa-block')[index];
@@ -27,7 +27,10 @@ function saveComment(index) {
 
   fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    body: formData
+    body: formData,
+    headers: {
+      'Accept': 'text/plain'
+    }
   })
   .then(response => response.text())
   .then(text => alert("Comment submitted successfully!"))
