@@ -30,26 +30,25 @@
         }
 
         function saveComment(index) {
-            const block = document.querySelectorAll('.qa-block')[index];
-            const question = block.querySelector('.question').innerText;
-            const comment = block.querySelector('textarea').value;
-            const assignee = block.getAttribute("data-assignee");
+  const block = document.querySelectorAll('.qa-block')[index];
+  const question = block.querySelector('.question').innerText;
+  const comment = block.querySelector('textarea').value;
+  const assignee = block.getAttribute("data-assignee");
 
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify({
-                    question: question,
-                    comment: comment,
-                    assignee: assignee
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => res.text())
-            .then(msg => alert("Comment submitted!"))
-            .catch(err => alert("Failed to save comment. Check console."));
-        }
+  const formData = new URLSearchParams();
+  formData.append("question", question);
+  formData.append("comment", comment);
+  formData.append("assignee", assignee);
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.text())
+  .then(msg => alert("Comment submitted!"))
+  .catch(err => alert("Failed to save comment. See console."));
+}
+
 
         function exportComments() {
             alert("Comments are saved in Google Sheets. You can export from there.");
